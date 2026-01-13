@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "email": "test@test.com",
+    "password": "123456",
+    "name": "Test User",
+    "wallet": {
+      "balance": 100,
+      "totalAdded": 100,
+      "totalUsed": 0,
+      "transactions": [
+        {
+          "date": "2024-01-01T00:00:00.000Z",
+          "type": "added",
+          "amount": 100,
+          "description": "Initial balance"
+        }
+      ]
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+]

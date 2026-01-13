@@ -22,25 +22,27 @@ const Signin = () => {
     e.preventDefault()
 
     setLoading(true)
-    signIn('credentials', { ...loginData, redirect: false })
-      .then((callback) => {
-        if (callback?.error) {
-          toast.error(callback?.error)
-          console.log(callback?.error)
-          setLoading(false)
-          return
-        }
-
-        if (callback?.ok && !callback?.error) {
+    fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: loginData.email, password: loginData.password }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error)
+        } else {
+          localStorage.setItem('user', JSON.stringify(data.user))
           toast.success('Login successful')
-          setLoading(false)
-          router.push('/')
+          window.location.href = '/'
         }
+        setLoading(false)
       })
       .catch((err) => {
+        toast.error('Login failed')
         setLoading(false)
-        console.log(err.message)
-        toast.error(err.message)
       })
   }
 
@@ -92,7 +94,7 @@ const Signin = () => {
       </Link>
       <p className='text-body-secondary text-white text-base text-center'>
         Not a member yet?{' '}
-        <Link href='/' className='text-primary hover:underline'>
+        <Link href='/signup' className='text-primary hover:underline'>
           Sign Up
         </Link>
       </p>

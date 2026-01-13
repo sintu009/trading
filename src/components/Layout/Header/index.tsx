@@ -16,7 +16,7 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 const Header: React.FC = () => {
   const pathUrl = usePathname()
   const { theme, setTheme } = useTheme()
-
+  const [user, setUser] = useState(null)
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [sticky, setSticky] = useState(false)
   const [isSignInOpen, setIsSignInOpen] = useState(false)
@@ -26,6 +26,19 @@ const Header: React.FC = () => {
   const signInRef = useRef<HTMLDivElement>(null)
   const signUpRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      setUser(JSON.parse(userData))
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    setUser(null)
+    window.location.href = '/'
+  }
 
   const handleScroll = () => {
     setSticky(window.scrollY >= 80)
@@ -70,6 +83,11 @@ const Header: React.FC = () => {
     }
   }, [isSignInOpen, isSignUpOpen, navbarOpen])
 
+  // Don't render header on admin pages
+  if (pathUrl.includes('/admin')) {
+    return null
+  }
+
   return (
     <header
       className={`fixed top-0 z-40 w-full pb-5 transition-all duration-300 ${sticky ? ' shadow-lg bg-background pt-5' : 'shadow-none pt-7'
@@ -82,23 +100,51 @@ const Header: React.FC = () => {
               <HeaderLink key={index} item={item} />
             ))}
           </nav>
-          <div className='sm:flex hidden gap-4'>
-            <Dialog>
-              <DialogTrigger className='bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white'>
-                Sign In
-              </DialogTrigger>
-              <DialogContent className='bg-[#0d121c]'>
-                <Signin />
-              </DialogContent>
-            </Dialog>
-            <Dialog>
-              <DialogTrigger className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-transparent hover:text-primary border border-primary'>
-                Sign Up
-              </DialogTrigger>
-              <DialogContent className='bg-[#0d121c]'>
-                <SignUp />
-              </DialogContent>
-            </Dialog>
+          <div className='sm:flex hidden gap-4 items-center'>
+            {user && !pathUrl.includes('/admin') ? (
+              <>
+                <Link href='/dashboard' className='flex items-center gap-2 text-white hover:text-primary'>
+                  <Icon icon='mdi:wallet' className='text-xl' />
+                  <span>${user.wallet?.balance?.toFixed(2) || '0.00'}</span>
+                </Link>
+                <span className='text-white text-sm'>Hi, {user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className='bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-sm'
+                >
+                  Logout
+                </button>
+              </>
+            ) : user ? (
+              <>
+                <span className='text-white text-sm'>Hi, {user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className='bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-sm'
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Dialog>
+                  <DialogTrigger className='bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white'>
+                    Sign In
+                  </DialogTrigger>
+                  <DialogContent className='bg-[#0d121c]'>
+                    <Signin />
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-transparent hover:text-primary border border-primary'>
+                    Sign Up
+                  </DialogTrigger>
+                  <DialogContent className='bg-[#0d121c]'>
+                    <SignUp />
+                  </DialogContent>
+                </Dialog>
+              </>
+            )}
           </div>
           <button
             onClick={() => setNavbarOpen(!navbarOpen)}
@@ -120,8 +166,6 @@ const Header: React.FC = () => {
             <h2 className='text-lg font-bold text-foreground dark:text-foreground'>
               <Logo />
             </h2>
-
-            {/*  */}
             <button
               onClick={() => setNavbarOpen(false)}
               className="bg-[url('/images/closed.svg')] bg-no-repeat bg-contain w-5 h-5 absolute top-0 right-0 mr-8 mt-8 dark:invert"
@@ -132,24 +176,35 @@ const Header: React.FC = () => {
               <MobileHeaderLink key={index} item={item} />
             ))}
             <div className='mt-4 flex flex-col gap-4 w-full'>
-              <Link
-                href='#'
-                className='bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white'
-                onClick={() => {
-                  setIsSignInOpen(true)
-                  setNavbarOpen(false)
-                }}>
-                Sign In
-              </Link>
-              <Link
-                href='#'
-                className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700'
-                onClick={() => {
-                  setIsSignUpOpen(true)
-                  setNavbarOpen(false)
-                }}>
-                Sign Up
-              </Link>
+              {user ? (
+                <>
+                  <Link href='/dashboard' className='text-white hover:text-primary'>
+                    Dashboard
+                  </Link>
+                  <span className='text-white'>Hi, {user.name}</span>
+                  <button
+                    onClick={handleLogout}
+                    className='bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg'
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href='/signin'
+                    className='bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white'
+                    onClick={() => setNavbarOpen(false)}>
+                    Sign In
+                  </Link>
+                  <Link
+                    href='/signup'
+                    className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700'
+                    onClick={() => setNavbarOpen(false)}>
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

@@ -22,15 +22,27 @@ const Work = () => {
   const services = [
     {
       icon: '/images/chooseus/chooseus-icon-1.svg',
-      text: 'Designed for crypto trading platforms',
+      text: 'Advanced trading charts and indicators',
     },
     {
       icon: '/images/chooseus/chooseus-icon-2.svg',
-      text: 'Kickstart your crypto website today',
+      text: 'Margin trading with up to 10x leverage',
     },
     {
       icon: '/images/chooseus/chooseus-icon-3.svg',
-      text: 'Launch your blockchain platform today',
+      text: 'Automated trading bots and strategies',
+    },
+    {
+      icon: '/images/chooseus/chooseus-icon-1.svg',
+      text: 'Real-time market data and alerts',
+    },
+    {
+      icon: '/images/chooseus/chooseus-icon-2.svg',
+      text: 'Professional order types (Stop-loss, Take-profit)',
+    },
+    {
+      icon: '/images/chooseus/chooseus-icon-3.svg',
+      text: 'Copy trading from expert traders',
     },
   ]
 
@@ -43,10 +55,10 @@ const Work = () => {
             className='lg:col-span-7 col-span-12'>
             <div className='flex flex-col gap-3'>
               <p className="text-white font-medium">
-                Why choose <span className='text-primary'>crypto</span>
+                Professional <span className='text-primary'>Trading Tools</span>
               </p>
               <h2 className='sm:text-5xl text-3xl text-white lg:w-full md:w-70% font-medium'>
-                Features of the crypto framer mobile application
+                Advanced features for serious crypto traders
               </h2>
             </div>
             <div className='grid md:grid-cols-2 gap-7 mt-11'>

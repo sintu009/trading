@@ -1,21 +1,13 @@
-import Signin from "@/components/Auth/SignIn";
-import Breadcrumb from "@/components/Common/Breadcrumb";
-import { Metadata } from "next";
+import SignIn from '@/components/Auth/SignIn'
 
-export const metadata: Metadata = {
-  title:
-    "Sign In | Property",
-};
-
-const SigninPage = () => {
+export default function SignInPage() {
   return (
-    <>
-      <Breadcrumb pageName="Sign In Page" />
-      <div className="max-w-2xl mx-auto">
-        <Signin />
+    <div className="min-h-screen bg-background py-20">
+      <div className="container mx-auto px-4">
+        <div className="max-w-md mx-auto bg-dark_grey/50 p-8 rounded-lg border border-white/10">
+          <SignIn />
+        </div>
       </div>
-    </>
-  );
-};
-
-export default SigninPage;
+    </div>
+  )
+}
