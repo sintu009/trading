@@ -5,19 +5,28 @@ import User from '@/models/User'
 export async function GET(request) {
   try {
     await connectDB()
+
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
-    
+
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
     }
 
-    const user = await User.findById(userId)
+    const user = await User.findById(userId).lean()
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ wallet: user.wallet })
+    // ✅ Ensure wallet always exists
+    const wallet = user.wallet || {
+      balance: 0,
+      totalAdded: 0,
+      totalUsed: 0,
+      transactions: []
+    }
+
+    return NextResponse.json({ wallet })
   } catch (error) {
     console.error('Wallet GET error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

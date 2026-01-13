@@ -102,13 +102,14 @@ const Dashboard = () => {
             <div className="bg-background/50 rounded-lg p-6">
               <h3 className="text-white text-xl font-semibold mb-4">Transaction History</h3>
               <div className="overflow-x-auto">
-                <table className="w-full text-white">
+                <table className="w-full text-white table-fixed">
                   <thead>
                     <tr className="border-b border-white/20">
-                      <th className="text-left py-3 px-4">Date</th>
-                      <th className="text-left py-3 px-4">Type</th>
-                      <th className="text-left py-3 px-4">Amount</th>
-                      <th className="text-left py-3 px-4">Description</th>
+                      <th className="text-left py-3 px-4 w-32">Date</th>
+                      <th className="text-left py-3 px-4 w-32">Type</th>
+                      <th className="text-left py-3 px-4 w-24">Amount</th>
+                      <th className="text-left py-3 px-4 w-48">Description</th>
+                      <th className="text-left py-3 px-4 w-64 break-words">Link</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -134,6 +135,9 @@ const Dashboard = () => {
                           </td>
                           <td className="py-3 px-4 text-white/70">
                             {transaction.description}
+                          </td>
+                          <td className="py-3 px-4 text-white/70 break-words">
+                             {transaction.link ? transaction.link : 'N/A'}
                           </td>
                         </tr>
                       ))

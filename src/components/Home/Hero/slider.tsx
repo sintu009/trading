@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export const plans = [
   {
@@ -44,25 +45,79 @@ const PricingCards = () => {
   const [open, setOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [usdtAddress, setUsdtAddress] = useState("");
+   const [user, setUser] = useState<any>(null); // get user from localStorage
+  const [wallet, setWallet] = useState({ balance: 0, totalAdded: 0, totalUsed: 0, transactions: [] });
+
+
+  // Load user on mount
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setWallet(parsedUser.wallet || wallet);
+    }
+  }, []);
 
   const handleBuyNow = (plan: any) => {
     setSelectedPlan(plan);
     setOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!user || !selectedPlan) return;
+
+    const amount = selectedPlan.investment;
+
+    // Optional: check if user has enough balance
+    if (wallet.balance < amount) {
+      toast.error("Insufficient balance!");
+      return;
+    }
+
     const payload = {
-      planTitle: selectedPlan.title,
-      amount: selectedPlan.investment,
-      usdtAddress,
+      userId: user.id,
+      amount,
+      link: usdtAddress || null, // optional
+      description: `Investment: ${selectedPlan.title}`, // use title instead of name
     };
 
-    console.log("SUBMITTED DATA:", payload);
+    try {
+      const res = await fetch("/api/wallet/deduct", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    // reset
-    setUsdtAddress("");
-    setOpen(false);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Failed to deduct amount");
+        return;
+      }
+
+      toast.success("Amount deducted successfully!");
+
+      // Update wallet state immediately
+      setWallet(data.wallet);
+
+      // Also update localStorage user
+      const updatedUser = { ...user, wallet: data.wallet };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      
+
+      // reset modal/input
+      setUsdtAddress("");
+      setOpen(false);
+      setSelectedPlan(null);
+    } catch (error) {
+      console.error("Deduction API error:", error);
+      toast.error("Something went wrong");
+    }
   };
+
+
 
   return (
     <>

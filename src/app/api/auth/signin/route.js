@@ -4,10 +4,13 @@ import connectDB from '@/lib/mongoose'
 import User from '@/models/User'
 import { SignJWT } from 'jose'          // ← better than jsonwebtoken in 2025+
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
 
 function validateEmail(email) { /* same */ }
-function sanitizeInput(input) { /* same, maybe improve */ }
+function sanitizeInput(input) {
+  if (typeof input !== 'string') return ''
+  return input.trim()
+}
 
 export async function POST(request) {
   try {
@@ -21,11 +24,12 @@ export async function POST(request) {
     const sEmail = sanitizeInput(email)
     const sPassword = sanitizeInput(password)
 
-    if (!sEmail || !sPassword || !validateEmail(sEmail)) {
+    if (!sEmail || !sPassword) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
     }
 
     const user = await User.findOne({ email: sEmail }).select('+password').lean()
+    console.log("user",user);
     if (!user) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
@@ -52,8 +56,13 @@ export async function POST(request) {
       user: {
         id: user._id,
         email: user.email,
-        name: user.name
-        // NO wallet here
+        name: user.name,
+        wallet: user.wallet || {
+          balance: 0,
+          totalAdded: 0,
+          totalUsed: 0,
+          transactions: []
+        }
       }
     })
 

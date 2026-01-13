@@ -4,7 +4,8 @@ const TransactionSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   type: { type: String, required: true },
   amount: { type: Number, required: true },
-  description: { type: String, required: true }
+  description: { type: String, required: true },
+  link: { type: String, default: null } 
 })
 
 const WalletSchema = new mongoose.Schema({
