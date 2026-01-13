@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 export const plans = [
   {
     title: "Starter Plan",
@@ -24,7 +27,7 @@ export const plans = [
     durationDays: 15,
     dailyProfit: 20,
     currency: "$",
-    highlight: true, // recommended
+    highlight: true,
   },
   {
     title: "Premium Plan",
@@ -38,10 +41,32 @@ export const plans = [
 ];
 
 const PricingCards = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [usdtAddress, setUsdtAddress] = useState("");
+
+  const handleBuyNow = (plan: any) => {
+    setSelectedPlan(plan);
+    setOpen(true);
+  };
+
+  const handleSubmit = () => {
+    const payload = {
+      planTitle: selectedPlan.title,
+      amount: selectedPlan.investment,
+      usdtAddress,
+    };
+
+    console.log("SUBMITTED DATA:", payload);
+
+    // reset
+    setUsdtAddress("");
+    setOpen(false);
+  };
+
   return (
-    <div>
+    <>
       <div className="max-w-7xl mx-auto px-6">
-        {/* SECTION TITLE */}
         <div className="mb-12">
           <h2 className="text-white text-3xl font-bold">Subscription</h2>
           <p className="text-gray-400 text-sm mt-2">
@@ -49,26 +74,22 @@ const PricingCards = () => {
           </p>
         </div>
 
-        {/* CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan, index) => (
             <div
               key={index}
               className={`relative rounded-2xl p-6
-                bg-gradient-to-b from-[#1c242b] to-[#0f1418]
-                border ${
-                  plan.highlight
-                    ? "border-cyan-400 shadow-[0_0_0_2px_rgba(34,211,238,0.6)]"
-                    : "border-white/20"
-                }
-                transition-all duration-300 hover:border-cyan-400`}
+              bg-gradient-to-b from-[#1c242b] to-[#0f1418]
+              border ${
+                plan.highlight
+                  ? "border-cyan-400 shadow-[0_0_0_2px_rgba(34,211,238,0.6)]"
+                  : "border-white/20"
+              }`}
             >
-              {/* Plan Title */}
               <h3 className="text-white text-sm font-semibold mb-6">
                 {plan.title}
               </h3>
 
-              {/* Investment */}
               <div className="text-center mb-4">
                 <p className="text-white text-4xl font-bold">
                   {plan.currency}
@@ -77,52 +98,101 @@ const PricingCards = () => {
                 <p className="text-gray-400 text-xs mt-1">Investment Amount</p>
               </div>
 
-              {/* Duration */}
               <p className="text-center text-xs text-gray-400 mb-5">
                 {plan.durationDays} Days Plan
               </p>
 
-              {/* CTA */}
               <button
+                onClick={() => handleBuyNow(plan)}
                 className="w-full bg-primary hover:bg-primary/90
-                           text-black text-sm font-semibold
-                           py-2.5 rounded-lg transition mb-6"
+                text-black text-sm font-semibold py-2.5 rounded-lg mb-6"
               >
                 Buy Now
               </button>
 
-              {/* Description */}
-              <p className="text-gray-300 text-xs leading-relaxed mb-5">
-                Earn a total return of{" "}
+              <p className="text-gray-300 text-xs mb-5">
+                Earn total{" "}
                 <span className="text-white font-semibold">
                   {plan.currency}
                   {plan.totalReturn}
                 </span>{" "}
-                in {plan.durationDays} days with guaranteed daily profit.
+                in {plan.durationDays} days.
               </p>
 
-              {/* Features */}
               <ul className="space-y-2 text-xs text-gray-200">
-                <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  Daily Profit: {plan.currency}
+                <li>
+                  ✓ Daily Profit: {plan.currency}
                   {plan.dailyProfit}
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  Total Return: {plan.currency}
+                <li>
+                  ✓ Total Return: {plan.currency}
                   {plan.totalReturn}
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  Duration: {plan.durationDays} Days
-                </li>
+                <li>✓ Duration: {plan.durationDays} Days</li>
               </ul>
             </div>
           ))}
         </div>
       </div>
-    </div>
+
+      {/* POPUP MODAL */}
+      {open && selectedPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-[#0f1418] rounded-xl w-full max-w-md p-6 border border-white/20">
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Confirm Subscription
+            </h3>
+
+            {/* Plan Info */}
+            <div className="bg-[#1c242b] rounded-lg p-4 mb-4">
+              <p className="text-gray-400 text-xs">Selected Plan</p>
+              <p className="text-white font-semibold">{selectedPlan.title}</p>
+              <p className="text-cyan-400 text-lg font-bold mt-1">
+                {selectedPlan.currency}
+                {selectedPlan.investment}
+              </p>
+            </div>
+
+            {/* USDT Input */}
+            <div className="mb-4">
+              <label className="text-gray-400 text-xs">
+                USDT Wallet Address
+              </label>
+              <input
+                type="text"
+                value={usdtAddress}
+                onChange={(e) => setUsdtAddress(e.target.value)}
+                placeholder="Enter USDT address"
+                className="w-full mt-1 px-3 py-2 rounded-lg
+                bg-[#1c242b] text-white text-sm
+                border border-white/20 focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setOpen(false)}
+                className="w-full py-2 rounded-lg
+                bg-white/10 text-white text-sm"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleSubmit}
+                disabled={!usdtAddress}
+                className="w-full py-2 rounded-lg
+                bg-primary text-black text-sm font-semibold
+                disabled:opacity-50"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -48,12 +48,7 @@ const SignUp = () => {
       <div className="mb-10 text-center mx-auto inline-block max-w-[160px]">
         <Logo />
       </div>
-      <SocialSignUp />
-      <span className="z-1 relative my-8 block text-center before:content-[''] before:absolute before:h-px before:w-40% before:bg-border before:left-0 before:top-3 after:content-[''] after:absolute after:h-px after:w-40% after:bg-border after:top-3 after:right-0">
-        <span className="text-body-secondary relative z-10 inline-block px-3 text-base text-white">
-          OR
-        </span>
-      </span>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-[22px]">
           <input
@@ -91,22 +86,6 @@ const SignUp = () => {
           </button>
         </div>
       </form>
-      <p className="text-body-secondary mb-4 text-white text-base max-w-2xs mx-auto text-center">
-        By creating an account you are agree with our{" "}
-        <a href="/#" className="text-primary hover:underline">
-          Privacy
-        </a>{" "}
-        and{" "}
-        <a href="/#" className="text-primary hover:underline">
-          Policy
-        </a>
-      </p>
-      <p className="text-body-secondary text-white text-base text-center">
-        Already have an account?
-        <Link href="/signin" className="pl-2 text-primary hover:underline">
-          Sign In
-        </Link>
-      </p>
     </>
   );
 };
