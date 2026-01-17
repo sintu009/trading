@@ -18,14 +18,14 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Work />
+      {/* <Work />
       <GlobalReach />
       <TimeLine />
       <Platform />
       <Portfolio />
       <Upgrade />
       <Perks />
-      <Faq />
+      <Faq /> */}
     </main>
   );
 }

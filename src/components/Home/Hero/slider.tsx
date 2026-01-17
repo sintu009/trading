@@ -56,6 +56,13 @@ const PricingCards = () => {
   const [usdtAddress, setUsdtAddress] = useState("");
    const [user, setUser] = useState<any>(null); // get user from localStorage
   const [wallet, setWallet] = useState({ balance: 0, totalAdded: 0, totalUsed: 0, transactions: [] });
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const paymentLinks = [
+    "upi://pay?pa=example@upi&pn=CrypGo",
+    "phonepe://pay?pa=example@upi&pn=CrypGo",
+    "gpay://upi/pay?pa=example@upi&pn=CrypGo",
+  ];
 
 
   // Load user on mount
@@ -215,6 +222,40 @@ const PricingCards = () => {
                 {selectedPlan.currency}
                 {selectedPlan.investment}
               </p>
+            </div>
+
+            {/* Payment Links */}
+            <div className="mb-4">
+              <label className="text-gray-400 text-xs mb-2 block">Payment Links</label>
+              <div className="space-y-2">
+                {paymentLinks.map((link, idx) => (
+                  <div key={idx} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={link}
+                      readOnly
+                      className={`flex-1 px-3 py-2 rounded-lg text-white text-sm border transition-all ${
+                        copiedIndex === idx 
+                          ? "bg-green-500/20 border-green-500" 
+                          : "bg-[#1c242b] border-white/20"
+                      }`}
+                    />
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(link);
+                        setCopiedIndex(idx);
+                        toast.success("Link copied!");
+                        setTimeout(() => setCopiedIndex(null), 2000);
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                        copiedIndex === idx ? "bg-green-500 text-white scale-105" : "bg-primary text-black"
+                      }`}
+                    >
+                      {copiedIndex === idx ? "✓ Copied" : "Copy"}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* USDT Input */}

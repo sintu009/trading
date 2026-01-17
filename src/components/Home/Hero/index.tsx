@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import BuyCrypto from "./buy-form";
@@ -7,7 +6,6 @@ import SellCrypto from "./sell-form";
 import CardSlider from "./slider";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import BrandLogo from "../BrandLogo";
 
 const Hero = () => {
   const [isBuying, setIsBuyingOpen] = useState(false);
@@ -24,7 +22,7 @@ const Hero = () => {
         setIsSellingOpen(false);
       }
     },
-    [BuyRef, SellRef]
+    [BuyRef, SellRef],
   );
 
   useEffect(() => {
