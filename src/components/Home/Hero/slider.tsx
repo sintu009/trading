@@ -8,16 +8,16 @@ export const plans = [
     investment: 50,
     totalReturn: 75,
     durationDays: 15,
-    // dailyProfit: 5,
+    dailyReturn: 5,
     currency: "$",
     highlight: false,
   },
   {
     title: "Basic Plan",
     investment: 100,
-    // totalReturn: 150,
+    totalReturn: 150,
     durationDays: 15,
-    // dailyProfit: 10,
+    dailyReturn: 10,
     currency: "$",
     highlight: false,
   },
@@ -26,7 +26,7 @@ export const plans = [
     investment: 200,
     totalReturn: 300,
     durationDays: 15,
-    // dailyProfit: 20,
+    dailyReturn: 20,
     currency: "$",
     highlight: true,
   },
@@ -35,16 +35,16 @@ export const plans = [
     investment: 500,
     totalReturn: 750,
     durationDays: 15,
-    // dailyProfit: 50,
+    dailyReturn: 50,
     currency: "$",
     highlight: false,
   },
   {
-    title: "Premium Plan",
-    investment: 500,
-    totalReturn: 750,
+    title: "Other Plan",
+    investment: 20,
+    totalReturn: 30,
     durationDays: 15,
-    // dailyProfit: 50,
+    dailyReturn: 2,
     currency: "$",
     highlight: false,
   },
@@ -54,16 +54,44 @@ const PricingCards = () => {
   const [open, setOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [usdtAddress, setUsdtAddress] = useState("");
-   const [user, setUser] = useState<any>(null); // get user from localStorage
-  const [wallet, setWallet] = useState({ balance: 0, totalAdded: 0, totalUsed: 0, transactions: [] });
+  const [user, setUser] = useState<any>(null); // get user from localStorage
+  const [wallet, setWallet] = useState({
+    balance: 0,
+    totalAdded: 0,
+    totalUsed: 0,
+    transactions: [],
+  });
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const paymentLinks = [
-    "upi://pay?pa=example@upi&pn=CrypGo",
-    "phonepe://pay?pa=example@upi&pn=CrypGo",
-    "gpay://upi/pay?pa=example@upi&pn=CrypGo",
-  ];
+  const [paymentLinks, setPaymentLinks] = useState([]);
+  const [linksLoading, setLinksLoading] = useState(false);
 
+  const fetchPaymentLinks = async () => {
+    try {
+      setLinksLoading(true);
+      const res = await fetch("/api/wallet-links");
+      const data = await res.json();
+
+      if (data.success) {
+        // only active links
+        const activeLinks = data.data
+          .filter((x) => x.isActive)
+          .map((x) => x.link);
+
+        setPaymentLinks(activeLinks);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLinksLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      fetchPaymentLinks();
+    }
+  }, [open]);
 
   // Load user on mount
   useEffect(() => {
@@ -121,7 +149,6 @@ const PricingCards = () => {
       const updatedUser = { ...user, wallet: data.wallet };
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      
 
       // reset modal/input
       setUsdtAddress("");
@@ -132,8 +159,6 @@ const PricingCards = () => {
       toast.error("Something went wrong");
     }
   };
-
-
 
   return (
     <>
@@ -191,10 +216,10 @@ const PricingCards = () => {
               </p>
 
               <ul className="space-y-2 text-xs text-gray-200">
-                {/* <li>
-                  ✓ Daily Profit: {plan.currency}
-                  {plan.dailyProfit}
-                </li> */}
+                <li>
+                  ✓ Daily Return: {plan.currency}
+                  {plan.dailyReturn}
+                </li>
                 <li>
                   ✓ Total Return: {plan.currency}
                   {plan.totalReturn}
@@ -224,9 +249,21 @@ const PricingCards = () => {
               </p>
             </div>
 
+            {linksLoading && (
+              <p className="text-gray-500 text-xs">Loading payment links...</p>
+            )}
+
+            {!linksLoading && paymentLinks.length === 0 && (
+              <p className="text-gray-500 text-xs">
+                No payment links available
+              </p>
+            )}
+
             {/* Payment Links */}
             <div className="mb-4">
-              <label className="text-gray-400 text-xs mb-2 block">Payment Links</label>
+              <label className="text-gray-400 text-xs mb-2 block">
+                Payment Links
+              </label>
               <div className="space-y-2">
                 {paymentLinks.map((link, idx) => (
                   <div key={idx} className="flex gap-2">
@@ -235,8 +272,8 @@ const PricingCards = () => {
                       value={link}
                       readOnly
                       className={`flex-1 px-3 py-2 rounded-lg text-white text-sm border transition-all ${
-                        copiedIndex === idx 
-                          ? "bg-green-500/20 border-green-500" 
+                        copiedIndex === idx
+                          ? "bg-green-500/20 border-green-500"
                           : "bg-[#1c242b] border-white/20"
                       }`}
                     />
@@ -248,7 +285,9 @@ const PricingCards = () => {
                         setTimeout(() => setCopiedIndex(null), 2000);
                       }}
                       className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                        copiedIndex === idx ? "bg-green-500 text-white scale-105" : "bg-primary text-black"
+                        copiedIndex === idx
+                          ? "bg-green-500 text-white scale-105"
+                          : "bg-primary text-black"
                       }`}
                     >
                       {copiedIndex === idx ? "✓ Copied" : "Copy"}

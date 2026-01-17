@@ -125,7 +125,7 @@ const Dashboard = () => {
                                 ? 'bg-green-600/20 text-green-400' 
                                 : 'bg-red-600/20 text-red-400'
                             }`}>
-                              {transaction.type === 'added' ? 'Added by Admin' : 'Used'}
+                              {transaction.type === 'added' ? 'Added' : 'Used'}
                             </span>
                           </td>
                           <td className={`py-3 px-4 font-semibold ${
