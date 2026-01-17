@@ -106,9 +106,9 @@ const Dashboard = () => {
                   <thead>
                     <tr className="border-b border-white/20">
                       <th className="text-left py-3 px-4 w-32">Date</th>
-                      {/* <th className="text-left py-3 px-4 w-32">Type</th> */}
+                      <th className="text-left py-3 px-4 w-32">Type</th>
                       <th className="text-left py-3 px-4 w-24">Amount</th>
-                      <th className="text-left py-3 px-4 w-48">Description</th>
+                      {/* <th className="text-left py-3 px-4 w-48">Description</th> */}
                       <th className="text-left py-3 px-4 w-64 break-words">Link</th>
                     </tr>
                   </thead>
@@ -119,7 +119,7 @@ const Dashboard = () => {
                           <td className="py-3 px-4">
                             {new Date(transaction.date).toLocaleDateString()}
                           </td>
-                          {/* <td className="py-3 px-4">
+                          <td className="py-3 px-4">
                             <span className={`px-2 py-1 rounded text-sm ${
                               transaction.type === 'added' 
                                 ? 'bg-green-600/20 text-green-400' 
@@ -127,15 +127,15 @@ const Dashboard = () => {
                             }`}>
                               {transaction.type === 'added' ? 'Added by Admin' : 'Used'}
                             </span>
-                          </td> */}
+                          </td>
                           <td className={`py-3 px-4 font-semibold ${
                             transaction.type === 'added' ? 'text-green-400' : 'text-red-400'
                           }`}>
                             {transaction.type === 'added' ? '+' : '-'}${transaction.amount.toFixed(2)}
                           </td>
-                          <td className="py-3 px-4 text-white/70">
+                          {/* <td className="py-3 px-4 text-white/70">
                             {transaction.description}
-                          </td>
+                          </td> */}
                           <td className="py-3 px-4 text-white/70 break-words">
                              {transaction.link ? transaction.link : 'N/A'}
                           </td>

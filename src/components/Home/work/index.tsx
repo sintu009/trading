@@ -22,7 +22,7 @@ const Work = () => {
   const services = [
     {
       icon: '/images/chooseus/chooseus-icon-1.svg',
-      text: 'Advanced trading charts and indicators',
+      text: 'Let us trade your money while you focus on what matters most.',
     },
     {
       icon: '/images/chooseus/chooseus-icon-2.svg',
@@ -58,7 +58,7 @@ const Work = () => {
                 Professional <span className='text-primary'>Trading Tools</span>
               </p>
               <h2 className='sm:text-5xl text-3xl text-white lg:w-full md:w-70% font-medium'>
-                Advanced features for serious crypto traders
+                Let us trade your money while you focus on what matters most.
               </h2>
             </div>
             <div className='grid md:grid-cols-2 gap-7 mt-11'>

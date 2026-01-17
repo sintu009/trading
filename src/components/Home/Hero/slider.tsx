@@ -8,16 +8,16 @@ export const plans = [
     investment: 50,
     totalReturn: 75,
     durationDays: 15,
-    dailyProfit: 5,
+    // dailyProfit: 5,
     currency: "$",
     highlight: false,
   },
   {
     title: "Basic Plan",
     investment: 100,
-    totalReturn: 150,
+    // totalReturn: 150,
     durationDays: 15,
-    dailyProfit: 10,
+    // dailyProfit: 10,
     currency: "$",
     highlight: false,
   },
@@ -26,7 +26,7 @@ export const plans = [
     investment: 200,
     totalReturn: 300,
     durationDays: 15,
-    dailyProfit: 20,
+    // dailyProfit: 20,
     currency: "$",
     highlight: true,
   },
@@ -35,7 +35,16 @@ export const plans = [
     investment: 500,
     totalReturn: 750,
     durationDays: 15,
-    dailyProfit: 50,
+    // dailyProfit: 50,
+    currency: "$",
+    highlight: false,
+  },
+  {
+    title: "Premium Plan",
+    investment: 500,
+    totalReturn: 750,
+    durationDays: 15,
+    // dailyProfit: 50,
     currency: "$",
     highlight: false,
   },
@@ -175,10 +184,10 @@ const PricingCards = () => {
               </p>
 
               <ul className="space-y-2 text-xs text-gray-200">
-                <li>
+                {/* <li>
                   ✓ Daily Profit: {plan.currency}
                   {plan.dailyProfit}
-                </li>
+                </li> */}
                 <li>
                   ✓ Total Return: {plan.currency}
                   {plan.totalReturn}

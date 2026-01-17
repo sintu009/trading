@@ -136,10 +136,7 @@ const AdminPortal = () => {
               {loading ? "Logging in..." : "Login to Admin Portal"}
             </button>
           </form>
-          <div className="mt-6 p-4 bg-white/5 rounded-lg">
-            <p className="text-white/60 text-center text-sm mb-2">Default Credentials:</p>
-            <p className="text-white text-sm text-center">admin@crypgo.com / admin123</p>
-          </div>
+         
         </div>
       </div>
     );
@@ -208,7 +205,7 @@ const AdminPortal = () => {
               {notifications.length > 0 ? (
                 notifications.slice(0, 5).map((notification) => (
                   <div
-                    key={notification.id}
+                    key={notification._id}
                     className="p-3 bg-white/5 rounded-lg border-l-4 border-primary"
                   >
                     <p className="text-white text-sm">{notification.message}</p>

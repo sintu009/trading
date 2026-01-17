@@ -62,18 +62,18 @@ const Hero = () => {
           <motion.div {...leftAnimation} className="flex flex-col gap-10">
             <div className="flex flex-col gap-4 text-center md:text-left">
               <div className="flex gap-6 items-center lg:justify-start justify-center">
-                <div className="py-1.5 px-4 bg-primary/10 rounded-full border border-white/10">
+                {/* <div className="py-1.5 px-4 bg-primary/10 rounded-full border border-white/10">
                   <span className="text-primary font-medium">
                     Future of crypto trading
                   </span>
-                </div>
+                </div> */}
               </div>
-              <h1 className="font-medium xl:text-[72px] md:text-6xl sm:text-5xl text-4xl md:text-start text-center text-white">
-                Advanced Crypto Trading Platform
-              </h1>
-              <p className="text-white">
+              <h2 className="font-medium xl:text-[72px] md:text-6xl sm:text-5xl text-4xl md:text-start text-center text-white">
+                Let us trade your money while you focus on what matters most.
+              </h2>
+              {/* <p className="text-white">
                 Trade 500+ cryptocurrencies with real-time charts, advanced order types, margin trading, and professional trading tools. Start your trading journey today.
-              </p>
+              </p> */}
             </div>
             <div className="flex items-center md:justify-start justify-center gap-4">
               <a
