@@ -297,32 +297,8 @@ const PricingCards = () => {
               </div>
             </div>
 
-            {/* USDT Input */}
-            <div className="mb-4">
-              <label className="text-gray-400 text-xs">
-                USDT Wallet Address
-              </label>
-              <input
-                type="text"
-                value={usdtAddress}
-                onChange={(e) => setUsdtAddress(e.target.value)}
-                placeholder="Enter USDT address"
-                className="w-full mt-1 px-3 py-2 rounded-lg
-                bg-[#1c242b] text-white text-sm
-                border border-white/20 focus:outline-none focus:border-cyan-400"
-              />
-            </div>
-
             {/* Actions */}
             <div className="flex gap-3">
-              <button
-                onClick={() => setOpen(false)}
-                className="w-full py-2 rounded-lg
-                bg-white/10 text-white text-sm"
-              >
-                Cancel
-              </button>
-
               <button
                 onClick={handleSubmit}
                 disabled={!usdtAddress}
@@ -330,7 +306,7 @@ const PricingCards = () => {
                 bg-primary text-black text-sm font-semibold
                 disabled:opacity-50"
               >
-                Submit
+                Done
               </button>
             </div>
           </div>
