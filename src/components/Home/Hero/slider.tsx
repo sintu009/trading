@@ -13,6 +13,15 @@ export const plans = [
     highlight: false,
   },
   {
+    title: "Starter Plan",
+    investment: 20,
+    totalReturn: 30,
+    durationDays: 15,
+    dailyReturn: 2,
+    currency: "$",
+    highlight: false,
+  },
+  {
     title: "Basic Plan",
     investment: 100,
     totalReturn: 150,
@@ -38,16 +47,7 @@ export const plans = [
     dailyReturn: 50,
     currency: "$",
     highlight: false,
-  },
-  {
-    title: "Other Plan",
-    investment: 20,
-    totalReturn: 30,
-    durationDays: 15,
-    dailyReturn: 2,
-    currency: "$",
-    highlight: false,
-  },
+  }
 ];
 
 const PricingCards = () => {
